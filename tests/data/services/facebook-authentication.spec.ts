@@ -1,27 +1,39 @@
 import { AuthenticationError } from '@/domain/errors'
-import { LoadFacebookApiUserApi } from '@/data/contracts/api'
+import { LoadFacebookApiUser } from '@/data/contracts/api'
 import { FacebookAuthenticationService } from '@/data/services'
 
-import { mock } from 'jest-mock-extended'
+import { mock, MockProxy } from 'jest-mock-extended'
+
+type SutTypes = {
+  sut: FacebookAuthenticationService
+  loadFacebookApiUser: MockProxy<LoadFacebookApiUser>
+}
+
+const makeSut = (): SutTypes => {
+  const loadFacebookApiUser = mock<LoadFacebookApiUser>()
+
+  const sut = new FacebookAuthenticationService(loadFacebookApiUser)
+
+  return {
+    sut,
+    loadFacebookApiUser
+  }
+}
 
 describe('FacebookAuthenticationService', () => {
-  it('should call LoadFacebookUserApi with correct params', async () => {
-    const loadFacebookApiUserApi = mock<LoadFacebookApiUserApi>()
-
-    const sut = new FacebookAuthenticationService(loadFacebookApiUserApi)
+  it('should call LoadFacebookUser with correct params', async () => {
+    const { sut, loadFacebookApiUser } = makeSut()
 
     await sut.perform({ token: 'any_token' })
 
-    expect(loadFacebookApiUserApi.loadUser).toHaveBeenCalledWith({ token: 'any_token' })
-    expect(loadFacebookApiUserApi.loadUser).toHaveBeenCalledTimes(1)
+    expect(loadFacebookApiUser.loadUser).toHaveBeenCalledWith({ token: 'any_token' })
+    expect(loadFacebookApiUser.loadUser).toHaveBeenCalledTimes(1)
   })
 
-  it('should return AuthenticationError when LoadFacebookUserApi returns undefined', async () => {
-    const loadFacebookApiUserApi = mock<LoadFacebookApiUserApi>()
+  it('should return AuthenticationError when LoadFacebookUser returns undefined', async () => {
+    const { sut, loadFacebookApiUser } = makeSut()
 
-    loadFacebookApiUserApi.loadUser.mockResolvedValueOnce(undefined)
-
-    const sut = new FacebookAuthenticationService(loadFacebookApiUserApi)
+    loadFacebookApiUser.loadUser.mockResolvedValueOnce(undefined)
 
     const authResult = await sut.perform({ token: 'any_token' })
 
