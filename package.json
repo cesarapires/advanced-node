@@ -1,0 +1,30 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "rimraf": "^3.0.2"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cesarapires/advanced-node.git"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cesarapires/advanced-node/issues"
+  },
+  "homepage": "https://github.com/cesarapires/advanced-node#readme"
+}
