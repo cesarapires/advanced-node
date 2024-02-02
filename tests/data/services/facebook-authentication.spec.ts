@@ -1,13 +1,14 @@
 import { AuthenticationError } from '@/domain/errors'
-import { LoadFacebookApiUser } from '@/data/contracts/api'
+import { LoadFacebookUserApi } from '@/data/contracts/api'
 import { FacebookAuthenticationService } from '@/data/services'
-import { LoadUserAccountRepository } from '@/data/contracts/repository'
+import { CreateFacebookAccountRepository, LoadUserAccountRepository } from '@/data/contracts/repository'
 
 import { mock, MockProxy } from 'jest-mock-extended'
 
 describe('FacebookAuthenticationService', () => {
-  let loadFacebookUserApi: MockProxy<LoadFacebookApiUser>
+  let loadFacebookUserApi: MockProxy<LoadFacebookUserApi>
   let loadUserAccountRepository: MockProxy<LoadUserAccountRepository>
+  let createFacebookAccountRepository: MockProxy<CreateFacebookAccountRepository>
   let sut: FacebookAuthenticationService
   const token = {
     token: 'any_token'
@@ -21,7 +22,12 @@ describe('FacebookAuthenticationService', () => {
       facebookId: 'any_fb_id'
     })
     loadUserAccountRepository = mock()
-    sut = new FacebookAuthenticationService(loadFacebookUserApi, loadUserAccountRepository)
+    createFacebookAccountRepository = mock()
+    sut = new FacebookAuthenticationService(
+      loadFacebookUserApi,
+      loadUserAccountRepository,
+      createFacebookAccountRepository
+    )
   })
 
   it('should call LoadFacebookUserApi with correct params', async () => {
@@ -44,5 +50,18 @@ describe('FacebookAuthenticationService', () => {
 
     expect(loadUserAccountRepository.load).toHaveBeenCalledWith({ email: 'any_fb_email' })
     expect(loadUserAccountRepository.load).toHaveBeenCalledTimes(1)
+  })
+
+  it('should call CreateUserAccountRepository when LoadUserAccountRepository returns undefined', async () => {
+    loadUserAccountRepository.load.mockResolvedValueOnce(undefined)
+
+    await sut.perform(token)
+
+    expect(createFacebookAccountRepository.createFromFacebook).toHaveBeenCalledWith({
+      name: 'any_fb_name',
+      email: 'any_fb_email',
+      facebookId: 'any_fb_id'
+    })
+    expect(createFacebookAccountRepository.createFromFacebook).toHaveBeenCalledTimes(1)
   })
 })
