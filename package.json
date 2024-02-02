@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "jest-mock-extended": "^2.0.9",
     "module-alias": "^2.2.2",
     "rimraf": "^3.0.2"
   },
