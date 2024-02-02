@@ -6,7 +6,7 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "CommonJS",
+    "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "baseUrl": "src",
@@ -16,5 +16,5 @@
     },
     "strict": true,
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }
