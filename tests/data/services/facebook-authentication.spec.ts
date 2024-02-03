@@ -50,7 +50,7 @@ describe('FacebookAuthenticationService', () => {
     expect(userAccountRepository.load).toHaveBeenCalledTimes(1)
   })
 
-  it('should call SaveUserAccountRepository when LoadUserAccountRepository returns undefined', async () => {
+  it('should create account with facebook data', async () => {
     await sut.perform(token)
 
     expect(userAccountRepository.saveWithFacebook).toHaveBeenCalledWith({
@@ -61,7 +61,7 @@ describe('FacebookAuthenticationService', () => {
     expect(userAccountRepository.saveWithFacebook).toHaveBeenCalledTimes(1)
   })
 
-  it('should call UpdateUserAccountRepository when LoadUserAccountRepository returns data', async () => {
+  it('should not update account name', async () => {
     userAccountRepository.load.mockResolvedValueOnce({
       id: 'any_id',
       name: 'any_name'
@@ -78,7 +78,7 @@ describe('FacebookAuthenticationService', () => {
     expect(userAccountRepository.saveWithFacebook).toHaveBeenCalledTimes(1)
   })
 
-  it('should update account name when LoadUserAccountRepository returns name undefined', async () => {
+  it('should update account name', async () => {
     userAccountRepository.load.mockResolvedValueOnce({
       id: 'any_id'
     })
