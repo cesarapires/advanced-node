@@ -17,16 +17,12 @@ export class FacebookAuthenticationService implements FacebookAuthentication {
 
     if (facebookData !== undefined) {
       const accountData = await this.userAccountRepository.load({ email: facebookData.email })
-
       const facebookAccount = new FacebookAccount(facebookData, accountData)
-
       const userAccount = await this.userAccountRepository.saveWithFacebook(facebookAccount)
-
       const token = await this.crypto.generateToken({
         key: userAccount.id,
         expirationInMs: AccessToken.expirationInMs
       })
-
       return new AccessToken(token)
     }
 
