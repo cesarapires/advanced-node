@@ -12,7 +12,7 @@ module.exports = {
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
   moduleNameMapper: {
-    '@/test/(.+)': '<rootDir>/test/$1',
+    '@/tests/(.+)': '<rootDir>/tests/$1',
     '@/(.+)': '<rootDir>/src/$1'
   },
   roots: [
