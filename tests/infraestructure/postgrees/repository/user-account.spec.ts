@@ -1,7 +1,7 @@
 import { LoadUserAccountRepository } from '@/data/contracts/repository'
 
-import { newDb } from 'pg-mem'
-import { Column, Entity, PrimaryGeneratedColumn, getRepository } from 'typeorm'
+import { IBackup, newDb } from 'pg-mem'
+import { Column, Entity, PrimaryGeneratedColumn, Repository, getConnection, getRepository } from 'typeorm'
 
 class PostregreeUserAccountRepository implements LoadUserAccountRepository {
   async load (params: LoadUserAccountRepository.Params): Promise<LoadUserAccountRepository.Result> {
@@ -33,12 +33,12 @@ export class PgUser {
 }
 
 describe('PostgreesUserAccountRepositpry', () => {
-  beforeEach(() => {
-
-  })
-
   describe('load', () => {
-    it('should return an account if email exists', async () => {
+    let sut: PostregreeUserAccountRepository
+    let postgreUserRepository: Repository<PgUser>
+    let backup: IBackup
+
+    beforeAll(async () => {
       const db = newDb()
       const connection = await db.adapters.createTypeormConnection({
         type: 'postgres',
@@ -46,29 +46,33 @@ describe('PostgreesUserAccountRepositpry', () => {
       })
 
       await connection.synchronize()
-      const postgreUserRepository = getRepository(PgUser)
-      await postgreUserRepository.save({ email: 'existing_email' })
-      const sut = new PostregreeUserAccountRepository()
 
-      const account = await sut.load({ email: 'existing_email' })
+      backup = db.backup()
+      postgreUserRepository = getRepository(PgUser)
+    })
+
+    afterAll(async () => {
+      await getConnection().close()
+    })
+
+    beforeEach(() => {
+      sut = new PostregreeUserAccountRepository()
+    })
+
+    afterEach(() => {
+      backup.restore()
+    })
+
+    it('should return an account if email exists', async () => {
+      await postgreUserRepository.save({ email: 'any_email' })
+
+      const account = await sut.load({ email: 'any_email' })
 
       expect(account).toEqual({ id: '1' })
-
-      await connection.close()
     })
 
     it('should return undefinied if not email exists', async () => {
-      const db = newDb()
-      const connection = await db.adapters.createTypeormConnection({
-        type: 'postgres',
-        entities: [PgUser]
-      })
-
-      await connection.synchronize()
-
-      const sut = new PostregreeUserAccountRepository()
-
-      const account = await sut.load({ email: 'new_email' })
+      const account = await sut.load({ email: 'any_email' })
 
       expect(account).toBeUndefined()
     })
