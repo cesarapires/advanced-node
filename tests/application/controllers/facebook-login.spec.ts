@@ -1,5 +1,5 @@
 import { FacebookAuthentication } from '@/domain/features'
-import { mock } from 'jest-mock-extended'
+import { MockProxy, mock } from 'jest-mock-extended'
 
 class FacebookLoginController {
   constructor (private readonly facebookAuthentication: FacebookAuthentication) {}
@@ -20,10 +20,19 @@ type HttpResponse = {
 }
 
 describe('FacebookLoginController', () => {
-  it('should return 400 if token is empty', async () => {
-    const facebookAuth = mock<FacebookAuthentication>()
-    const sut = new FacebookLoginController(facebookAuth)
+  let sut: FacebookLoginController
+  let facebookAuth: MockProxy<FacebookAuthentication>
 
+  beforeAll(() => {
+    facebookAuth = mock()
+  })
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    sut = new FacebookLoginController(facebookAuth)
+  })
+
+  it('should return 400 if token is empty', async () => {
     const httpResponse = await sut.handle({ token: '' })
 
     expect(httpResponse).toEqual({
@@ -33,9 +42,6 @@ describe('FacebookLoginController', () => {
   })
 
   it('should return 400 if token is null', async () => {
-    const facebookAuth = mock<FacebookAuthentication>()
-    const sut = new FacebookLoginController(facebookAuth)
-
     const httpResponse = await sut.handle({ token: '' })
 
     expect(httpResponse).toEqual({
@@ -45,9 +51,15 @@ describe('FacebookLoginController', () => {
   })
 
   it('should return 400 if token is undefinied', async () => {
-    const facebookAuth = mock<FacebookAuthentication>()
-    const sut = new FacebookLoginController(facebookAuth)
+    const httpResponse = await sut.handle({ token: '' })
 
+    expect(httpResponse).toEqual({
+      statusCode: 400,
+      data: new Error('The field token is required')
+    })
+  })
+
+  it('should return 401 if authentication fails', async () => {
     const httpResponse = await sut.handle({ token: '' })
 
     expect(httpResponse).toEqual({
@@ -57,9 +69,6 @@ describe('FacebookLoginController', () => {
   })
 
   it('should call FacebookAuthentication with correct params', async () => {
-    const facebookAuth = mock<FacebookAuthentication>()
-    const sut = new FacebookLoginController(facebookAuth)
-
     await sut.handle({ token: 'any_token' })
 
     expect(facebookAuth.perform).toHaveBeenCalledWith({ token: 'any_token' })
