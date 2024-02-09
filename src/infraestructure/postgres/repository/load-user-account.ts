@@ -3,7 +3,7 @@ import { PostgresUserAccount } from '@/infraestructure/postgres/entities'
 
 import { getRepository } from 'typeorm'
 
-export class PostregresUserAccountRepository implements LoadUserAccountRepository {
+export class PostregresLoadUserAccountRepository implements LoadUserAccountRepository {
   async load (params: LoadUserAccountRepository.Params): Promise<LoadUserAccountRepository.Result> {
     const postreUserRepository = getRepository(PostgresUserAccount)
     const postgresUser = await postreUserRepository.findOne({ email: params.email })
