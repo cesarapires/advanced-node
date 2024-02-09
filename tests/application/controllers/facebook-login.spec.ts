@@ -1,5 +1,5 @@
 import { AccessToken } from '@/domain/models'
-import { RequiredFieldrError, ServerError, UnauthorizedError } from '@/application/errors'
+import { RequiredFieldError, ServerError, UnauthorizedError } from '@/application/errors'
 import { AuthenticationError } from '@/domain/errors'
 import { FacebookAuthentication } from '@/domain/features'
 import { FacebookLoginController } from '@/application/controllers'
@@ -25,7 +25,7 @@ describe('FacebookLoginController', () => {
 
     expect(httpResponse).toEqual({
       statusCode: 400,
-      data: new RequiredFieldrError('token')
+      data: new RequiredFieldError('token')
     })
   })
 
@@ -34,7 +34,7 @@ describe('FacebookLoginController', () => {
 
     expect(httpResponse).toEqual({
       statusCode: 400,
-      data: new RequiredFieldrError('token')
+      data: new RequiredFieldError('token')
     })
   })
 
@@ -43,7 +43,7 @@ describe('FacebookLoginController', () => {
 
     expect(httpResponse).toEqual({
       statusCode: 400,
-      data: new RequiredFieldrError('token')
+      data: new RequiredFieldError('token')
     })
   })
 

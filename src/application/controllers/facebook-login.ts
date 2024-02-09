@@ -1,5 +1,5 @@
 import { AccessToken } from '@/domain/models'
-import { RequiredFieldrError } from '@/application/errors'
+import { RequiredFieldError } from '@/application/errors'
 import { HttpResponse, badRequest, ok, serverError, unauthorized } from '@/application/helpers'
 import { FacebookAuthentication } from '@/domain/features'
 
@@ -36,7 +36,7 @@ export class FacebookLoginController {
 
   private validade (httpRequest: HttpRequest): Error | undefined {
     if (httpRequest.token === '' || httpRequest.token === null || httpRequest.token === undefined) {
-      return new RequiredFieldrError('token')
+      return new RequiredFieldError('token')
     }
   }
 }
