@@ -16,7 +16,7 @@ export class FacebookLoginController {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse<Model>> {
     try {
-      const error = this.validade(httpRequest)
+      const error = this.validate(httpRequest)
 
       if (error !== undefined) {
         return badRequest(error)
@@ -34,9 +34,9 @@ export class FacebookLoginController {
     }
   }
 
-  private validade (httpRequest: HttpRequest): Error | undefined {
+  private validate (httpRequest: HttpRequest): Error | undefined {
     const validator = new RequiredStringValidator(httpRequest.token, 'token')
 
-    return validator.validade()
+    return validator.validate()
   }
 }
