@@ -1,6 +1,6 @@
 import { AccessToken } from '@/domain/models'
 import { RequiredFieldrError, ServerError } from '@/application/errors'
-import { HttpResponse, badRequest } from '@/application/helpers'
+import { HttpResponse, badRequest, unauthorized } from '@/application/helpers'
 import { FacebookAuthentication } from '@/domain/features'
 
 export class FacebookLoginController {
@@ -12,21 +12,18 @@ export class FacebookLoginController {
         return badRequest(new RequiredFieldrError('token'))
       }
 
-      const result = await this.facebookAuthentication.perform({ token: httpRequest.token })
+      const accessToken = await this.facebookAuthentication.perform({ token: httpRequest.token })
 
-      if (result instanceof AccessToken) {
+      if (accessToken instanceof AccessToken) {
         return {
           statusCode: 200,
           data: {
-            accessToken: result.value
+            accessToken: accessToken.value
           }
         }
       }
 
-      return {
-        statusCode: 401,
-        data: result
-      }
+      return unauthorized()
     } catch (error: any) {
       return {
         statusCode: 500,
