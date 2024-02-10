@@ -37,7 +37,7 @@ describe('PostgresLoadUserAccountRepository', () => {
     expect(account).toEqual({ id: '1' })
   })
 
-  it('should return undefinied if not email exists', async () => {
+  it('should return undefined if not email exists', async () => {
     const account = await sut.load({ email: 'any_email' })
 
     expect(account).toBeUndefined()

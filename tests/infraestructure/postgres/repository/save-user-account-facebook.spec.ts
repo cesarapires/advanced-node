@@ -28,7 +28,7 @@ describe('PostgresSaveUserAccountFacebookRepository', () => {
     backup.restore()
   })
 
-  it('should create an account if id is undefinied', async () => {
+  it('should create an account if id is undefined', async () => {
     const account = await sut.saveWithFacebook({
       name: 'any_name',
       email: 'any_email',
@@ -40,7 +40,7 @@ describe('PostgresSaveUserAccountFacebookRepository', () => {
     })
   })
 
-  it('should update account if id is definied', async () => {
+  it('should update account if id is defined', async () => {
     await postgresUserRepository.save({
       name: 'any_name',
       email: 'any_email',
