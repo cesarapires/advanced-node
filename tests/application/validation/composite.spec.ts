@@ -1,22 +1,6 @@
+import { Validator, ValidationComposite } from '@/application/validation'
+
 import { MockProxy, mock } from 'jest-mock-extended'
-
-interface Validator {
-  validate: () => Error | undefined
-}
-
-class ValidationComposite {
-  constructor (private readonly validators: Validator[]) {}
-
-  validate (): Error | undefined {
-    for (const validaor of this.validators) {
-      const error = validaor.validate()
-
-      if (error !== undefined) {
-        return error
-      }
-    }
-  }
-}
 
 describe('ValidationComposite', () => {
   let sut: ValidationComposite
