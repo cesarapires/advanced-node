@@ -33,7 +33,7 @@ describe('FabookApi', () => {
     expect(httpClient.get).toHaveBeenCalledWith({
       url: 'https://graph.facebook.com/oauth/access_token',
       params: {
-        client_url: clientId,
+        client_id: clientId,
         client_secret: clientSecret,
         grant_type: 'client_credentials'
       }
@@ -72,5 +72,13 @@ describe('FabookApi', () => {
       name: 'any_facebook_name',
       email: 'any_facebook_email'
     })
+  })
+
+  it('should return undefined if HttpGetClient throws', async () => {
+    httpClient.get.mockReset().mockRejectedValueOnce(new Error('facebook_api_generic_error'))
+
+    const facebookUser = await sut.loadUser({ token: 'any_client_token' })
+
+    expect(facebookUser).toBeUndefined()
   })
 })
