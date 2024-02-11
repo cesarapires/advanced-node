@@ -29,10 +29,12 @@
     "lint-staged": "^11.2.6",
     "pg-mem": "^1.9.17",
     "ts-jest": "^27.1.5",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
   },
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "dev": "ts-node-dev --respawn --transpile-only --clear -r dotenv/config --inspect=0.0.0.0:9229 src/main",
     "start": "node dist/main/api",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm test -- --watch",
