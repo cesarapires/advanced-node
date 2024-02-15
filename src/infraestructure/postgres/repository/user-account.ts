@@ -3,11 +3,19 @@ import { PostgresUserAccount } from '@/infraestructure/postgres/entities'
 
 import { getRepository } from 'typeorm'
 
+type ParamsLoad = LoadUserAccountRepository.Params
+type ResultLoad = LoadUserAccountRepository.Result
+
+type ParamsSave = SaveFacebookAccountRepository.Params
+type ResultSave = SaveFacebookAccountRepository.Result
+
 export class PostregresUserAccountRepository implements LoadUserAccountRepository, SaveFacebookAccountRepository {
   private readonly postgresUserRepository = getRepository(PostgresUserAccount)
 
-  async load (params: LoadUserAccountRepository.Params): Promise<LoadUserAccountRepository.Result> {
-    const postgresUser = await this.postgresUserRepository.findOne({ email: params.email })
+  async load (params: ParamsLoad): Promise<ResultLoad> {
+    const { email } = params
+
+    const postgresUser = await this.postgresUserRepository.findOne({ email: email })
 
     if (postgresUser !== undefined) {
       return {
@@ -17,23 +25,25 @@ export class PostregresUserAccountRepository implements LoadUserAccountRepositor
     }
   }
 
-  async saveWithFacebook (params: SaveFacebookAccountRepository.Params): Promise<SaveFacebookAccountRepository.Result> {
+  async saveWithFacebook (params: ParamsSave): Promise<ResultSave> {
+    const { id } = params
+
     let resultId: string
 
-    if (params.id === undefined) {
+    if (id === undefined) {
       const acccount = await this.saveAccount(params)
       resultId = acccount.id.toString()
     } else {
       await this.updateAccount(params)
-      resultId = params.id
+      resultId = id
     }
 
     return {
-      id: resultId ?? params.id
+      id: resultId ?? id
     }
   }
 
-  private async saveAccount (params: SaveFacebookAccountRepository.Params): Promise<PostgresUserAccount> {
+  private async saveAccount (params: ParamsSave): Promise<PostgresUserAccount> {
     const { name, email, facebookId } = params
 
     return this.postgresUserRepository.save({
@@ -43,8 +53,9 @@ export class PostregresUserAccountRepository implements LoadUserAccountRepositor
     })
   }
 
-  private async updateAccount (params: SaveFacebookAccountRepository.Params): Promise<void> {
+  private async updateAccount (params: ParamsSave): Promise<void> {
     const { id, name, facebookId } = params
+
     if (id !== undefined) {
       await this.postgresUserRepository.update({
         id: parseInt(id)

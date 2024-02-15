@@ -5,6 +5,9 @@ import { FacebookAuthentication } from '@/domain/features'
 import { LoadUserAccountRepository, SaveFacebookAccountRepository } from '@/data/contracts/repository'
 import { AccessToken, FacebookAccount } from '@/domain/models'
 
+type Params = FacebookAuthentication.Params
+type Result = FacebookAuthentication.Result
+
 export class FacebookAuthenticationService implements FacebookAuthentication {
   constructor (
     private readonly facebookApi: LoadFacebookUserApi,
@@ -12,7 +15,7 @@ export class FacebookAuthenticationService implements FacebookAuthentication {
     private readonly crypto: TokenGenerator
   ) {}
 
-  async perform (params: FacebookAuthentication.Params): Promise<FacebookAuthentication.Result> {
+  async perform (params: Params): Promise<Result> {
     const facebookData = await this.facebookApi.loadUser(params)
 
     if (facebookData !== undefined) {
