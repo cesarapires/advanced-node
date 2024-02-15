@@ -7,7 +7,9 @@ class ExpressRouter {
   constructor (private readonly controller: Controller) {}
 
   async adapt (request: Request, response: Response): Promise<void> {
-    await this.controller.handle({ ...request.body })
+    const httpResponse = await this.controller.handle({ ...request.body })
+
+    response.status(200).json(httpResponse.data)
   }
 }
 
@@ -22,6 +24,10 @@ describe('ExpressRouter', () => {
     request = getMockReq({ body: { any: 'any' } })
     response = getMockRes().res
     controller = mock()
+    controller.handle.mockResolvedValue({
+      statusCode: 200,
+      data: { data: 'any_data' }
+    })
 
     sut = new ExpressRouter(controller)
   })
@@ -32,6 +38,7 @@ describe('ExpressRouter', () => {
     await sut.adapt(request, response)
 
     expect(controller.handle).toHaveBeenCalledWith({ any: 'any' })
+    expect(controller.handle).toHaveBeenCalledTimes(1)
   })
 
   it('should call handle with empty request', async () => {
@@ -40,5 +47,15 @@ describe('ExpressRouter', () => {
     await sut.adapt(request, response)
 
     expect(controller.handle).toHaveBeenCalledWith({})
+    expect(controller.handle).toHaveBeenCalledTimes(1)
+  })
+
+  it('should respond with 200 and valid data', async () => {
+    await sut.adapt(request, response)
+
+    expect(response.status).toHaveBeenCalledWith(200)
+    expect(response.status).toHaveBeenCalledTimes(1)
+    expect(response.json).toHaveBeenCalledWith({ data: 'any_data' })
+    expect(response.json).toHaveBeenCalledTimes(1)
   })
 })
