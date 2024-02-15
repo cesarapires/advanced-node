@@ -14,5 +14,5 @@ export const setupRoutes = (express: Express): void => {
 
   login(router)
 
-  express.use(router)
+  express.use('/api', router)
 }
