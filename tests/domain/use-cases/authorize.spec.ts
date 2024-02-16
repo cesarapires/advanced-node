@@ -9,14 +9,14 @@ export namespace TokenValidator {
     token: string
   }
 
-  export type Result = boolean
+  export type Result = string
 }
 
 export class Authorize {
   constructor (private readonly crypto: TokenValidator) {}
 
-  async perform (token: string): Promise<void> {
-    await this.crypto.validateToken({ token: token })
+  async perform (token: string): Promise<string> {
+    return await this.crypto.validateToken({ token: token })
   }
 }
 
@@ -29,7 +29,7 @@ describe('Authorize', () => {
 
   beforeAll(() => {
     crypto = mock()
-    crypto.validateToken.mockResolvedValue(true)
+    crypto.validateToken.mockResolvedValue('any_user_id')
   })
 
   beforeEach(() => {
@@ -43,5 +43,11 @@ describe('Authorize', () => {
 
     expect(crypto.validateToken).toHaveBeenCalledWith(token)
     expect(crypto.validateToken).toHaveBeenCalledTimes(1)
+  })
+
+  it('should return the correct accessToken', async () => {
+    const userId = await sut.perform('any_token')
+
+    expect(userId).toBe('any_user_id')
   })
 })
