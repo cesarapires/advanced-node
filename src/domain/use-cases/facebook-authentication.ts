@@ -1,14 +1,13 @@
 import { AuthenticationError } from '@/domain/models/errors'
 import { TokenGenerator } from '@/domain/contracts/crypto'
 import { LoadFacebookUserApi } from '@/domain/contracts/api'
-import { FacebookAuthentication } from '@/domain/features'
 import { LoadUserAccountRepository, SaveFacebookAccountRepository } from '@/domain/contracts/repository'
 import { AccessToken, FacebookAccount } from '@/domain/models'
 
-type Params = FacebookAuthentication.Params
-type Result = FacebookAuthentication.Result
+type Params = {token: string}
+type Result = AccessToken | AuthenticationError
 
-export class FacebookAuthenticationUseCase implements FacebookAuthentication {
+export class FacebookAuthentication {
   constructor (
     private readonly facebookApi: LoadFacebookUserApi,
     private readonly userAccountRepository: LoadUserAccountRepository & SaveFacebookAccountRepository,

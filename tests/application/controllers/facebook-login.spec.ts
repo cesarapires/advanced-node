@@ -1,7 +1,7 @@
 import { AccessToken } from '@/domain/models'
 import { AuthenticationError } from '@/domain/models/errors'
 import { UnauthorizedError } from '@/application/errors'
-import { FacebookAuthentication } from '@/domain/features'
+import { FacebookAuthentication } from '@/domain/use-cases'
 import { RequiredStringValidator } from '@/application/validation'
 import { FacebookLoginController } from '@/application/controllers'
 
