@@ -1,5 +1,5 @@
 import { AccessToken } from '@/domain/models'
-import { AuthenticationError } from '@/domain/errors'
+import { AuthenticationError } from '@/domain/models/errors'
 import { UnauthorizedError } from '@/application/errors'
 import { FacebookAuthentication } from '@/domain/features'
 import { RequiredStringValidator } from '@/application/validation'
