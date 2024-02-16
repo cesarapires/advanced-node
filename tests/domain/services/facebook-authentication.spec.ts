@@ -1,9 +1,9 @@
 import { AccessToken, FacebookAccount } from '@/domain/models'
-import { TokenGenerator } from '@/data/contracts/crypto'
+import { TokenGenerator } from '@/domain/contracts/crypto'
 import { AuthenticationError } from '@/domain/errors'
-import { LoadFacebookUserApi } from '@/data/contracts/api'
-import { FacebookAuthenticationService } from '@/data/services'
-import { SaveFacebookAccountRepository, LoadUserAccountRepository } from '@/data/contracts/repository'
+import { LoadFacebookUserApi } from '@/domain/contracts/api'
+import { FacebookAuthenticationService } from '@/domain/services'
+import { SaveFacebookAccountRepository, LoadUserAccountRepository } from '@/domain/contracts/repository'
 
 import { mocked } from 'ts-jest/utils'
 import { mock, MockProxy } from 'jest-mock-extended'
