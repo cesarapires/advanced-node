@@ -1,3 +1,3 @@
 export * from './client'
 export * from './axios-client'
-export * from './express-router'
+export * from '../../main/adapters/express-router'

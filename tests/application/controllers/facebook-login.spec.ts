@@ -1,4 +1,3 @@
-import { AccessToken } from '@/domain/models'
 import { AuthenticationError } from '@/domain/models/errors'
 import { UnauthorizedError } from '@/application/errors'
 import { FacebookAuthentication } from '@/domain/use-cases'
@@ -14,7 +13,7 @@ describe('FacebookLoginController', () => {
 
   beforeAll(() => {
     facebookAuth = mock()
-    facebookAuth.perform.mockResolvedValue(new AccessToken('any_value'))
+    facebookAuth.perform.mockResolvedValue({ accessToken: 'any_value' })
     token = 'any_token'
   })
 
@@ -32,7 +31,7 @@ describe('FacebookLoginController', () => {
   })
 
   it('should return 401 if authentication fails', async () => {
-    facebookAuth.perform.mockResolvedValueOnce(new AuthenticationError())
+    facebookAuth.perform.mockRejectedValueOnce(new AuthenticationError())
 
     const httpResponse = await sut.handle({ token: token })
 

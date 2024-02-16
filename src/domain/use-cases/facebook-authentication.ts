@@ -5,7 +5,7 @@ import { LoadUserAccountRepository, SaveFacebookAccountRepository } from '@/doma
 import { AccessToken, FacebookAccount } from '@/domain/models'
 
 type Params = {token: string}
-type Result = AccessToken | AuthenticationError
+type Result = { accessToken: string } | AuthenticationError
 
 export class FacebookAuthentication {
   constructor (
@@ -25,9 +25,9 @@ export class FacebookAuthentication {
         key: userAccount.id,
         expirationInMs: AccessToken.expirationInMs
       })
-      return new AccessToken(token)
+      return { accessToken: token }
     }
 
-    return new AuthenticationError()
+    throw new AuthenticationError()
   }
 }
