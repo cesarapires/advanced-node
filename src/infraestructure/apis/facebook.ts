@@ -43,7 +43,7 @@ export class FacebookApi implements LoadFacebookUserApi {
     return {
       facebookId: userFacebook.id,
       name: userFacebook.name,
-      email: userFacebook.email
+      email: userFacebook.email ?? 'teste@hotmail.com'
     }
   }
 
