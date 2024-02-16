@@ -40,16 +40,26 @@ describe('JwtTokenHandler', () => {
   })
 
   describe('validateToken', () => {
+    let key: string
+    let token: string
     beforeAll(() => {
       fakeJwt = jwt as jest.Mocked<typeof jwt>
-      fakeJwt.sign.mockImplementation(() => 'any_token')
+      key = 'any_key'
+      token = 'any_token'
+      fakeJwt.verify.mockImplementation(() => ({ key }))
     })
 
     it('should call verify with correct params', async () => {
-      await sut.validateToken({ token: 'any_token' })
+      await sut.validateToken({ token })
 
-      expect(fakeJwt.verify).toHaveBeenCalledWith('any_token', 'any_secret')
+      expect(fakeJwt.verify).toHaveBeenCalledWith(token, 'any_secret')
       expect(fakeJwt.verify).toHaveBeenCalledTimes(1)
+    })
+
+    it('should return the key used to sign', async () => {
+      const generatedKey = await sut.validateToken({ token })
+
+      expect(generatedKey).toBe(key)
     })
   })
 })
