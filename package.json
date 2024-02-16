@@ -42,7 +42,7 @@
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "dev": "ts-node-dev --respawn --transpile-only --clear -r dotenv/config --inspect=0.0.0.0:9229 src/main",
-    "start": "node dist/main",
+    "start": "node -r dotenv/config dist/main",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "npm test -- --watch",
     "test:coverage": "npm test -- --coverage",
