@@ -12,7 +12,7 @@ describe('ExpressRouter', () => {
 
   let sut: RequestHandler
 
-  beforeEach(() => {
+  beforeAll(() => {
     request = getMockReq({ body: { any: 'any' } })
     response = getMockRes().res
     next = getMockRes().next
@@ -21,7 +21,10 @@ describe('ExpressRouter', () => {
       statusCode: 200,
       data: { data: 'any_data' }
     })
+  })
 
+  beforeEach(() => {
+    jest.clearAllMocks()
     sut = adaptExpressRoute(controller)
   })
 
@@ -33,7 +36,7 @@ describe('ExpressRouter', () => {
   })
 
   it('should call handle with empty request', async () => {
-    const request = getMockReq()
+    request = getMockReq()
 
     await sut(request, response, next)
 
