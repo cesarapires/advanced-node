@@ -22,14 +22,14 @@ describe('Authorize', () => {
   })
 
   it('should call TokenValidator with correct params', async () => {
-    await sut.perform('any_token')
+    await sut.perform(token)
 
     expect(crypto.validateToken).toHaveBeenCalledWith(token)
     expect(crypto.validateToken).toHaveBeenCalledTimes(1)
   })
 
   it('should return the correct accessToken', async () => {
-    const userId = await sut.perform('any_token')
+    const userId = await sut.perform(token)
 
     expect(userId).toBe('any_user_id')
   })

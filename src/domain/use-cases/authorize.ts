@@ -1,9 +1,12 @@
 import { TokenValidator } from '@/domain/contracts/crypto'
 
+type Params = {token: string}
+type Result = string
+
 export class Authorize {
   constructor (private readonly crypto: TokenValidator) {}
 
-  async perform (token: string): Promise<string> {
-    return this.crypto.validateToken({ token: token })
+  async perform (params: Params): Promise<Result> {
+    return this.crypto.validateToken(params)
   }
 }
