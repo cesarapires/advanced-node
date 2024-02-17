@@ -16,7 +16,7 @@ describe('FacebookApiIntegrationTest', () => {
   })
 
   it('should return a Facebook User if token is valid', async () => {
-    const userFacebook = await sut.loadUser({ token: 'EAAk0ZCdCSSoMBO6xZCWF8dCHHYlSVlHabKnHykAlmbOUIyYNOfRy6hoGeBBg772rwy4u0ojLRLJwzm6PFLl1SFTEfr6kStKnwGKy8v70p6V2QhUQpZC03A6cer7k3rm8yd2jrYtJCUZBB9IaZCazLXDjJHtwi6eXOxHoTJkKOfy02ZCjBwf7b9ZCTeAjZBLgyxiJ1RTk4y3PpDrQZAUbq248KNrz4iTsjiVTFvKndCvNMCCVdpqOchGm3A5XGPQeZAWQZDZD' })
+    const userFacebook = await sut.loadUser({ token: env.facebookApi.accessToken })
 
     expect(userFacebook).toEqual({
       facebookId: '7335011393227383',
