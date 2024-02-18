@@ -6,7 +6,8 @@ import { MockProxy, mock } from 'jest-mock-extended'
 type Adapter =(middleware: Middleware) => RequestHandler
 
 const adaptExpressMiddleware: Adapter = middleware => async (request, response, next) => {
-  await middleware.handle({ ...request.headers })
+  const { statusCode, data } = await middleware.handle({ ...request.headers })
+  response.status(statusCode).json(data)
 }
 
 interface Middleware {
@@ -25,6 +26,11 @@ describe('ExpressMiddleware', () => {
     response = getMockRes().res
     next = getMockRes().next
     middleware = mock()
+
+    middleware.handle.mockResolvedValue({
+      statusCode: 500,
+      data: { error: 'any_error' }
+    })
   })
 
   beforeEach(() => {
@@ -46,5 +52,14 @@ describe('ExpressMiddleware', () => {
 
     expect(middleware.handle).toHaveBeenCalledWith({})
     expect(middleware.handle).toHaveBeenCalledTimes(1)
+  })
+
+  it('should respond with correct error and statusCode', async () => {
+    await sut(request, response, next)
+
+    expect(response.status).toHaveBeenCalledWith(500)
+    expect(response.status).toHaveBeenCalledTimes(1)
+    expect(response.json).toHaveBeenCalledWith({ error: 'any_error' })
+    expect(response.json).toHaveBeenCalledTimes(1)
   })
 })
