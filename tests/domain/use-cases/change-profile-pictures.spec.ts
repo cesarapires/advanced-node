@@ -1,15 +1,6 @@
+import { UploadFile } from '@/domain/contracts/gateway'
+
 import { MockProxy, mock } from 'jest-mock-extended'
-
-interface UploadFile {
-  upload: (params: UploadFile.Params) => Promise<void>
-}
-
-export namespace UploadFile {
-  export type Params = {
-    key: string
-    file: Buffer
-  }
-}
 
 interface UniqueIdGenerator {
   generate: (params: UniqueIdGenerator.Params) => Promise<UniqueIdGenerator.Result>
