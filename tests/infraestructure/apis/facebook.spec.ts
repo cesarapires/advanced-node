@@ -1,10 +1,10 @@
-import { FacebookApi } from '@/infraestructure/apis'
+import { Facebook } from '@/infraestructure/apis'
 import { HttpGetClient } from '@/infraestructure/http'
 
 import { MockProxy, mock } from 'jest-mock-extended'
 
 describe('FabookApi', () => {
-  let sut: FacebookApi
+  let sut: Facebook
   let httpClient: MockProxy<HttpGetClient>
   let clientId: string
   let clientSecret: string
@@ -24,7 +24,7 @@ describe('FabookApi', () => {
         name: 'any_facebook_name',
         email: 'any_facebook_email'
       })
-    sut = new FacebookApi(httpClient, clientId, clientSecret)
+    sut = new Facebook(httpClient, clientId, clientSecret)
   })
 
   it('should get app token', async () => {

@@ -1,14 +1,14 @@
 import { FacebookAuthentication } from '@/domain/use-cases'
-import { makeFacebookApi } from '@/main/factories/api'
+import { makefacebook } from '@/main/factories/api'
 import { makePostregresUserAccountRepository } from '@/main/factories/repositories'
-import { makeJwtTokenHandler } from '@/main/factories/crypto'
+import { makeJwtTokenHandler } from '@/main/factories/token'
 
 export const makeFacebookAuthentication = (): FacebookAuthentication => {
   const userAccountRepository = makePostregresUserAccountRepository()
 
-  const facebookApi = makeFacebookApi()
+  const facebook = makefacebook()
 
-  const crypto = makeJwtTokenHandler()
+  const token = makeJwtTokenHandler()
 
-  return new FacebookAuthentication(facebookApi, userAccountRepository, crypto)
+  return new FacebookAuthentication(facebook, userAccountRepository, token)
 }

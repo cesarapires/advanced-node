@@ -5,7 +5,7 @@ import { PostgresUserAccount } from '@/infraestructure/postgres/entities'
 import { IBackup } from 'pg-mem'
 import { getConnection } from 'typeorm'
 import request from 'supertest'
-import { FacebookApi } from '@/infraestructure/apis'
+import { Facebook } from '@/infraestructure/apis'
 import { mocked } from 'ts-jest/utils'
 
 jest.mock('@/infraestructure/apis/facebook')
@@ -28,10 +28,10 @@ describe('Login Routes', () => {
     })
 
     it('should return 200 with AccessToken', async () => {
-      const FacebookApiStub = jest.fn().mockImplementation(() => ({
+      const facebookStub = jest.fn().mockImplementation(() => ({
         loadUser: jest.fn().mockResolvedValueOnce({ facebookId: 'any_id', name: 'any_name', email: 'any_email' })
       }))
-      mocked(FacebookApi).mockImplementation(FacebookApiStub)
+      mocked(Facebook).mockImplementation(facebookStub)
 
       const { app } = await import('@/main/config/app')
 

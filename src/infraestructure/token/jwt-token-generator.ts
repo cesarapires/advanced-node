@@ -1,4 +1,4 @@
-import { TokenGenerator, TokenValidator } from '@/domain/contracts/crypto'
+import { TokenGenerator, TokenValidator } from '@/domain/contracts/token'
 import { JwtPayload, sign, verify } from 'jsonwebtoken'
 
 type ParamsGenerator = TokenGenerator.Params

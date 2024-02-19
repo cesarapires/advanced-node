@@ -1,9 +1,9 @@
-import { FacebookApi } from '@/infraestructure/apis'
+import { Facebook } from '@/infraestructure/apis'
 import { env } from '@/main/config/env'
 import { makeAxiosHttpClient } from '@/main/factories/http'
 
-export const makeFacebookApi = (): FacebookApi => {
+export const makefacebook = (): Facebook => {
   const axiosClient = makeAxiosHttpClient()
 
-  return new FacebookApi(axiosClient, env.facebookApi.clientId, env.facebookApi.clientSecret)
+  return new Facebook(axiosClient, env.facebook.clientId, env.facebook.clientSecret)
 }

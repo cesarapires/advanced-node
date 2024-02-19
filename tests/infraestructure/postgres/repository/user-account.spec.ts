@@ -5,7 +5,7 @@ import { PostregresUserAccountRepository } from '@/infraestructure/postgres/repo
 import { IBackup } from 'pg-mem'
 import { Repository, getConnection, getRepository } from 'typeorm'
 
-describe('PostgresLoadUserAccountRepository', () => {
+describe('PostgresLoadUserAccount', () => {
   let sut: PostregresUserAccountRepository
   let postgresUserRepository: Repository<PostgresUserAccount>
   let backup: IBackup
