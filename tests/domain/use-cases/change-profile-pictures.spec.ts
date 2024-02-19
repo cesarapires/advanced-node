@@ -1,19 +1,7 @@
 import { UploadFile } from '@/domain/contracts/gateway'
+import { UniqueIdGenerator } from '@/domain/contracts/crypto'
 
 import { MockProxy, mock } from 'jest-mock-extended'
-
-interface UniqueIdGenerator {
-  generate: (params: UniqueIdGenerator.Params) => Promise<UniqueIdGenerator.Result>
-}
-
-export namespace UniqueIdGenerator {
-  export type Params = {
-    id: string
-  }
-  export type Result = {
-    uniqueId: string
-  }
-}
 
 type Params = ChangeProfilePicture.Params
 type Result = ChangeProfilePicture.Result
