@@ -11,6 +11,6 @@ export const adaptExpressMiddleware: Adapter = middleware => async (request, res
     request.locals = { ...request.locals, ...Object.fromEntries(entries) }
     next()
   } else {
-    response.status(statusCode).json(data)
+    response.status(statusCode).json({ error: data.message })
   }
 }
