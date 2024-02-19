@@ -1,31 +1,8 @@
 import { UploadFile } from '@/domain/contracts/gateway'
+import { ChangeProfilePicture } from '@/domain/use-cases'
 import { UniqueIdGenerator } from '@/domain/contracts/crypto'
 
 import { MockProxy, mock } from 'jest-mock-extended'
-
-type Params = ChangeProfilePicture.Params
-type Result = ChangeProfilePicture.Result
-
-class ChangeProfilePicture {
-  constructor (
-    private readonly uploadFile: UploadFile,
-    private readonly crypto: UniqueIdGenerator
-  ) {}
-
-  async perform (params: Params): Result {
-    const { id, file } = params
-    const { uniqueId } = await this.crypto.generate({ id })
-    await this.uploadFile.upload({ key: uniqueId, file: file })
-  }
-}
-
-export namespace ChangeProfilePicture {
-  export type Params = {
-    id: string
-    file: Buffer
-  }
-  export type Result = Promise<void>
-}
 
 describe('ChangeProfilePicture', () => {
   let file: Buffer
