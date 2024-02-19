@@ -12,15 +12,17 @@ export class ChangeProfilePicture {
 
   async perform (params: Params): Result {
     const { id, file } = params
-    const { uniqueId } = await this.crypto.generate({ id })
-    await this.uploadFile.upload({ key: uniqueId, file: file })
+    if (file !== undefined) {
+      const { uniqueId } = await this.crypto.generate({ id })
+      await this.uploadFile.upload({ key: uniqueId, file: file })
+    }
   }
 }
 
 namespace ChangeProfilePicture {
   export type Params = {
     id: string
-    file: Buffer
+    file?: Buffer
   }
   export type Result = Promise<void>
 }
