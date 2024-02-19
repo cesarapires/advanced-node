@@ -14,11 +14,13 @@ export class ChangeProfilePicture {
 
   async perform (params: Params): Result {
     const { id, file } = params
+    let pictureUrl: string | undefined
     if (file !== undefined) {
       const { uniqueId } = await this.crypto.generate({ id })
       const { url } = await this.uploadFile.upload({ key: uniqueId, file: file })
-      await this.userProfileRepository.savePicture({ pictureUrl: url })
+      pictureUrl = url
     }
+    await this.userProfileRepository.savePicture({ pictureUrl })
   }
 }
 
