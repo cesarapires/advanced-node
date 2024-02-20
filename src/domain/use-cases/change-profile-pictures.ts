@@ -19,8 +19,9 @@ export class ChangeProfilePicture {
       const { uniqueId } = await this.crypto.generate({ id })
       const { url } = await this.uploadFile.upload({ key: uniqueId, file: file })
       pictureUrl = url
+    } else {
+      await this.userProfileRepository.load({ id })
     }
-    await this.userProfileRepository.load({ id })
     await this.userProfileRepository.savePicture({ pictureUrl })
   }
 }
