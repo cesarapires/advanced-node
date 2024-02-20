@@ -5,5 +5,6 @@ export interface SaveUserProfile {
 export namespace SaveUserProfile {
   export type Params = {
     pictureUrl?: string
+    initials?: string
   }
 }

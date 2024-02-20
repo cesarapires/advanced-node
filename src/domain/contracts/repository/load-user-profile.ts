@@ -1,9 +1,12 @@
 export interface LoadUserProfile {
-  load: (params: LoadUserProfile.Params) => Promise<void>
+  load: (params: LoadUserProfile.Params) => Promise<LoadUserProfile.Result>
 }
 
 export namespace LoadUserProfile {
   export type Params = {
     id: string
+  }
+  export type Result = {
+    name?: string
   }
 }

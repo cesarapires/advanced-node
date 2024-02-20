@@ -15,14 +15,23 @@ export class ChangeProfilePicture {
   async perform (params: Params): Result {
     const { id, file } = params
     let pictureUrl: string | undefined
+    let initials: string | undefined
     if (file !== undefined) {
       const { uniqueId } = await this.crypto.generate({ id })
       const { url } = await this.uploadFile.upload({ key: uniqueId, file: file })
       pictureUrl = url
     } else {
-      await this.userProfileRepository.load({ id })
+      const userProfile = await this.userProfileRepository.load({ id })
+      if (userProfile.name !== undefined) {
+        const firstLetters = userProfile.name.match(/\b(.)/g) ?? []
+        if (firstLetters.length > 1) {
+          initials = `${firstLetters.shift()?.toUpperCase() ?? ''}${firstLetters.pop()?.toUpperCase() ?? ''}`
+        } else {
+          initials = userProfile.name.substring(0, 2).toUpperCase()
+        }
+      }
     }
-    await this.userProfileRepository.savePicture({ pictureUrl })
+    await this.userProfileRepository.savePicture({ pictureUrl, initials })
   }
 }
 
