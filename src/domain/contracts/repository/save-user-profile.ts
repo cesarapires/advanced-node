@@ -1,8 +1,8 @@
-export interface SaveUserPictures {
-  savePicture: (params: SaveUserPictures.Params) => Promise<void>
+export interface SaveUserProfile {
+  savePicture: (params: SaveUserProfile.Params) => Promise<void>
 }
 
-export namespace SaveUserPictures {
+export namespace SaveUserProfile {
   export type Params = {
     pictureUrl?: string
   }

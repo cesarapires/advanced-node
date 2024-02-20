@@ -1,6 +1,6 @@
 import { UploadFile } from '@/domain/contracts/gateway'
 import { UniqueIdGenerator } from '@/domain/contracts/crypto'
-import { SaveUserPictures } from '@/domain/contracts/repository'
+import { SaveUserProfile, LoadUserProfile } from '@/domain/contracts/repository'
 
 type Params = ChangeProfilePicture.Params
 type Result = ChangeProfilePicture.Result
@@ -9,7 +9,7 @@ export class ChangeProfilePicture {
   constructor (
     private readonly uploadFile: UploadFile,
     private readonly crypto: UniqueIdGenerator,
-    private readonly userProfileRepository: SaveUserPictures
+    private readonly userProfileRepository: SaveUserProfile & LoadUserProfile
   ) {}
 
   async perform (params: Params): Result {
@@ -20,6 +20,7 @@ export class ChangeProfilePicture {
       const { url } = await this.uploadFile.upload({ key: uniqueId, file: file })
       pictureUrl = url
     }
+    await this.userProfileRepository.load({ id })
     await this.userProfileRepository.savePicture({ pictureUrl })
   }
 }
