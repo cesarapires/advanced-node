@@ -1,3 +1,4 @@
+import { UserProfile } from '@/domain/models'
 import { UploadFile } from '@/domain/contracts/gateway'
 import { UniqueIdGenerator } from '@/domain/contracts/crypto'
 import { SaveUserProfile, LoadUserProfile } from '@/domain/contracts/repository'
@@ -14,24 +15,17 @@ export class ChangeProfilePicture {
 
   async perform (params: Params): Result {
     const { id, file } = params
-    let pictureUrl: string | undefined
-    let initials: string | undefined
+    const data: {pictureUrl?: string, name?: string} = {}
     if (file !== undefined) {
       const { uniqueId } = await this.crypto.generate({ id })
       const { url } = await this.uploadFile.upload({ key: uniqueId, file: file })
-      pictureUrl = url
+      data.pictureUrl = url
     } else {
-      const userProfile = await this.userProfileRepository.load({ id })
-      if (userProfile.name !== undefined) {
-        const firstLetters = userProfile.name.match(/\b(.)/g) ?? []
-        if (firstLetters.length > 1) {
-          initials = `${firstLetters.shift()?.toUpperCase() ?? ''}${firstLetters.pop()?.toUpperCase() ?? ''}`
-        } else {
-          initials = userProfile.name.substring(0, 2).toUpperCase()
-        }
-      }
+      data.name = (await this.userProfileRepository.load({ id })).name
     }
-    await this.userProfileRepository.savePicture({ pictureUrl, initials })
+    const userProfile = new UserProfile(id)
+    userProfile.setPicture(data)
+    await this.userProfileRepository.savePicture(userProfile)
   }
 }
 
