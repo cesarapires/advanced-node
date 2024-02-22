@@ -11,7 +11,7 @@ export class ChangeProfilePicture {
     private readonly uploadFile: UploadFile & DeleteFile,
     private readonly crypto: UniqueIdGenerator,
     private readonly userProfileRepository: SaveUserProfile & LoadUserProfile
-  ) {}
+  ) { }
 
   async perform (params: Params): Promise<Result> {
     const { id, file } = params
