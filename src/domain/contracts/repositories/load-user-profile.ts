@@ -6,7 +6,7 @@ export namespace LoadUserProfile {
   export type Params = {
     id: string
   }
-  export type Result = {
+  export type Result = undefined | {
     name?: string
   }
 }

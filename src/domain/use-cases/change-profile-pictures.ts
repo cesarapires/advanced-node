@@ -38,8 +38,7 @@ export class ChangeProfilePicture {
 
   private async getNameProfile (params: Params): Promise<string | undefined> {
     const { id } = params
-    const { name } = await this.userProfileRepository.load({ id })
-    return name
+    return (await this.userProfileRepository.load({ id }))?.name
   }
 }
 
