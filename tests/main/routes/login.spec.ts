@@ -1,5 +1,5 @@
 import { UnauthorizedError } from '@/application/errors'
-import { makeFakeDb } from '@/../tests/infraestructure/repositories/mocks'
+import { makeFakeDb } from '@/../tests/infraestructure/repositories/postgres/mocks'
 import { PostgresUserAccount } from '@/infraestructure/repositories/postgres/entities'
 
 import { IBackup } from 'pg-mem'

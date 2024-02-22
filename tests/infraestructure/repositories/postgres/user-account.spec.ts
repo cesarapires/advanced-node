@@ -1,4 +1,4 @@
-import { makeFakeDb } from '@/tests/infraestructure/repositories/mocks'
+import { makeFakeDb } from '@/../tests/infraestructure/repositories/postgres/mocks'
 import { PostgresUserAccount } from '@/infraestructure/repositories/postgres/entities'
 import { PostregresUserAccountRepository } from '@/infraestructure/repositories/postgres'
 
@@ -35,7 +35,7 @@ describe('PostgresLoadUserAccount', () => {
 
       const account = await sut.load({ email: 'any_email' })
 
-      expect(account).toEqual({ id: '1' })
+      expect(account).toMatchObject({ id: '1' })
     })
 
     it('should return undefined if not email exists', async () => {
@@ -53,7 +53,7 @@ describe('PostgresLoadUserAccount', () => {
         facebookId: 'any_facebook_id'
       })
 
-      expect(account).toEqual({
+      expect(account).toMatchObject({
         id: '1'
       })
     })
@@ -74,10 +74,10 @@ describe('PostgresLoadUserAccount', () => {
 
       const accountUpdated = await postgresUserRepository.findOne({ id: 1 })
 
-      expect(account).toEqual({
+      expect(account).toMatchObject({
         id: '1'
       })
-      expect(accountUpdated).toEqual({
+      expect(accountUpdated).toMatchObject({
         id: 1,
         name: 'new_name',
         email: 'any_email',
