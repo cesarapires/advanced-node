@@ -2,7 +2,7 @@ import { AuthenticationError } from '@/domain/models/errors'
 import { UnauthorizedError } from '@/application/errors'
 import { FacebookAuthentication } from '@/domain/use-cases'
 import { RequiredStringValidator } from '@/application/validation'
-import { FacebookLoginController } from '@/application/controllers'
+import { Controller, FacebookLoginController } from '@/application/controllers'
 
 import { MockProxy, mock } from 'jest-mock-extended'
 
@@ -20,6 +20,10 @@ describe('FacebookLoginController', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     sut = new FacebookLoginController(facebookAuth)
+  })
+
+  it('should extendes controller', async () => {
+    expect(sut).toBeInstanceOf(Controller)
   })
 
   it('should build Validators correctly', async () => {
