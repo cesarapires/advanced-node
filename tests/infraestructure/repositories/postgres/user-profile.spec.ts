@@ -47,4 +47,14 @@ describe('PostgresLoadUserAccount', () => {
       })
     })
   })
+
+  describe('SavePicture', () => {
+    it('should load user profile', async () => {
+      const { id } = await postgresUserRepository.save({ email: 'any_email', name: 'any_name' })
+
+      const userProfile = await sut.load({ id: id.toString() })
+
+      expect(userProfile?.name).toBe('any_name')
+    })
+  })
 })
