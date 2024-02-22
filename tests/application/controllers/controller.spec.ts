@@ -3,7 +3,7 @@ import { Controller } from '@/application/controllers'
 import { ServerError } from '@/application/errors'
 
 import { mocked } from 'ts-jest/utils'
-import { HttpResponse } from '../helpers'
+import { HttpResponse } from '@/application/helpers'
 
 jest.mock('@/application/validation/composite')
 

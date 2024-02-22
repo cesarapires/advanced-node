@@ -1,4 +1,4 @@
-import { TokenValidator } from '@/domain/contracts/token'
+import { TokenValidator } from '@/domain/contracts/gateways/token'
 
 type Params = {token: string}
 type Result = string

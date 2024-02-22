@@ -1,5 +1,5 @@
 import { Authorize } from '@/domain/use-cases'
-import { TokenValidator } from '@/domain/contracts/token'
+import { TokenValidator } from '@/domain/contracts/gateways/token'
 
 import { mock, MockProxy } from 'jest-mock-extended'
 

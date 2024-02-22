@@ -1,7 +1,7 @@
 import { AuthenticationError } from '@/domain/models/errors'
-import { TokenGenerator } from '@/domain/contracts/token'
-import { LoadFacebookUser } from '@/domain/contracts/gateways'
-import { LoadUserAccount, SaveFacebookAccount } from '@/domain/contracts/repository'
+import { TokenGenerator } from '@/domain/contracts/gateways/token'
+import { LoadFacebookUser } from '@/domain/contracts/gateways/facebook'
+import { LoadUserAccount, SaveFacebookAccount } from '@/domain/contracts/repositories'
 import { AccessToken, FacebookAccount } from '@/domain/models'
 
 type Params = {token: string}

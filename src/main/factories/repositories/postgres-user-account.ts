@@ -1,4 +1,4 @@
-import { PostregresUserAccountRepository } from '@/infraestructure/postgres/repository'
+import { PostregresUserAccountRepository } from '@/infraestructure/repositories/postgres'
 
 export const makePostregresUserAccountRepository = (): PostregresUserAccountRepository => {
   return new PostregresUserAccountRepository()

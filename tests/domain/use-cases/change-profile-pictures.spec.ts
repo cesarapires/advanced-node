@@ -1,8 +1,8 @@
 import { UserProfile } from '@/domain/models'
-import { UploadFile, DeleteFile } from '@/domain/contracts/gateways'
+import { UploadFile, DeleteFile } from '@/domain/contracts/gateways/file-storage'
 import { ChangeProfilePicture } from '@/domain/use-cases'
-import { UniqueIdGenerator } from '@/domain/contracts/crypto'
-import { SaveUserProfile, LoadUserProfile } from '@/domain/contracts/repository'
+import { UniqueIdGenerator } from '@/domain/contracts/gateways/crypto'
+import { SaveUserProfile, LoadUserProfile } from '@/domain/contracts/repositories'
 
 import { MockProxy, mock } from 'jest-mock-extended'
 import { mocked } from 'ts-jest/utils'

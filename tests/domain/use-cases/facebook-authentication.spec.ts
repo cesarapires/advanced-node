@@ -1,9 +1,9 @@
 import { AccessToken, FacebookAccount } from '@/domain/models'
-import { TokenGenerator } from '@/domain/contracts/token'
+import { TokenGenerator } from '@/domain/contracts/gateways/token'
 import { AuthenticationError } from '@/domain/models/errors'
-import { LoadFacebookUser } from '@/domain/contracts/gateways'
+import { LoadFacebookUser } from '@/domain/contracts/gateways/facebook'
 import { FacebookAuthentication } from '@/domain/use-cases'
-import { SaveFacebookAccount, LoadUserAccount } from '@/domain/contracts/repository'
+import { SaveFacebookAccount, LoadUserAccount } from '@/domain/contracts/repositories'
 
 import { mocked } from 'ts-jest/utils'
 import { mock, MockProxy } from 'jest-mock-extended'

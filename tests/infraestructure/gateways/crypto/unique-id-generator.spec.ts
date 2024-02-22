@@ -1,4 +1,4 @@
-import { UniqueIdGeneratorHandler } from '@/infraestructure/crypto'
+import { UniqueIdGeneratorHandler } from '@/infraestructure/gateways/crypto'
 
 import { mocked } from 'ts-jest/utils'
 import { v4 } from 'uuid'

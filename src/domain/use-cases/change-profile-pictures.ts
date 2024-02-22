@@ -1,7 +1,7 @@
 import { UserProfile } from '@/domain/models'
-import { DeleteFile, UploadFile } from '@/domain/contracts/gateways'
-import { UniqueIdGenerator } from '@/domain/contracts/crypto'
-import { SaveUserProfile, LoadUserProfile } from '@/domain/contracts/repository'
+import { DeleteFile, UploadFile } from '@/domain/contracts/gateways/file-storage'
+import { UniqueIdGenerator } from '@/domain/contracts/gateways/crypto'
+import { SaveUserProfile, LoadUserProfile } from '@/domain/contracts/repositories'
 
 type Params = ChangeProfilePicture.Params
 type Result = ChangeProfilePicture.Result

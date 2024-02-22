@@ -1,4 +1,4 @@
-import { UniqueIdGenerator } from '@/domain/contracts/crypto'
+import { UniqueIdGenerator } from '@/domain/contracts/gateways/crypto'
 
 import { v4 } from 'uuid'
 

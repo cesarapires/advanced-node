@@ -1,11 +1,11 @@
 import { UnauthorizedError } from '@/application/errors'
-import { makeFakeDb } from '@/tests/infraestructure/postgres/mocks'
-import { PostgresUserAccount } from '@/infraestructure/postgres/entities'
+import { makeFakeDb } from '@/../tests/infraestructure/repositories/mocks'
+import { PostgresUserAccount } from '@/infraestructure/repositories/postgres/entities'
 
 import { IBackup } from 'pg-mem'
 import { getConnection } from 'typeorm'
 import request from 'supertest'
-import { Facebook } from '@/infraestructure/gateways'
+import { Facebook } from '@/infraestructure/gateways/facebook'
 import { mocked } from 'ts-jest/utils'
 
 jest.mock('@/infraestructure/gateways/facebook')

@@ -1,5 +1,5 @@
-import { LoadUserAccount, SaveFacebookAccount } from '@/domain/contracts/repository'
-import { PostgresUserAccount } from '@/infraestructure/postgres/entities'
+import { LoadUserAccount, SaveFacebookAccount } from '@/domain/contracts/repositories'
+import { PostgresUserAccount } from '@/infraestructure/repositories/postgres/entities'
 
 import { getRepository } from 'typeorm'
 
