@@ -1,5 +1,5 @@
 import { HttpGetClient } from '@/infraestructure/http'
-import { LoadFacebookUser } from '@/domain/contracts/gateway'
+import { LoadFacebookUser } from '@/domain/contracts/gateways'
 
 type AppToken = {
   access_token: string

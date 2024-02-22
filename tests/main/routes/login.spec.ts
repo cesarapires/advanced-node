@@ -5,10 +5,10 @@ import { PostgresUserAccount } from '@/infraestructure/postgres/entities'
 import { IBackup } from 'pg-mem'
 import { getConnection } from 'typeorm'
 import request from 'supertest'
-import { Facebook } from '@/infraestructure/apis'
+import { Facebook } from '@/infraestructure/gateways'
 import { mocked } from 'ts-jest/utils'
 
-jest.mock('@/infraestructure/apis/facebook')
+jest.mock('@/infraestructure/gateways/facebook')
 
 describe('Login Routes', () => {
   describe('POST /login/facebook', () => {

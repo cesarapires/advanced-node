@@ -1,5 +1,5 @@
 import { UserProfile } from '@/domain/models'
-import { UploadFile, DeleteFile } from '@/domain/contracts/gateway'
+import { UploadFile, DeleteFile } from '@/domain/contracts/gateways'
 import { ChangeProfilePicture } from '@/domain/use-cases'
 import { UniqueIdGenerator } from '@/domain/contracts/crypto'
 import { SaveUserProfile, LoadUserProfile } from '@/domain/contracts/repository'

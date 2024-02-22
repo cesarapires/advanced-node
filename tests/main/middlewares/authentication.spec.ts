@@ -6,7 +6,7 @@ import { ForbiddenError } from '@/application/errors'
 import request from 'supertest'
 import { sign } from 'jsonwebtoken'
 
-jest.mock('@/infraestructure/apis/facebook')
+jest.mock('@/infraestructure/gateways/facebook')
 
 describe('Authentication Middleware', () => {
   it('should returns 403 if authorization header was not provided', async () => {

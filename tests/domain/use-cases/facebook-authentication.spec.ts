@@ -1,7 +1,7 @@
 import { AccessToken, FacebookAccount } from '@/domain/models'
 import { TokenGenerator } from '@/domain/contracts/token'
 import { AuthenticationError } from '@/domain/models/errors'
-import { LoadFacebookUser } from '@/domain/contracts/gateway'
+import { LoadFacebookUser } from '@/domain/contracts/gateways'
 import { FacebookAuthentication } from '@/domain/use-cases'
 import { SaveFacebookAccount, LoadUserAccount } from '@/domain/contracts/repository'
 
