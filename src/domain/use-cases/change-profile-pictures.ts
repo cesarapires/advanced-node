@@ -25,7 +25,8 @@ export class ChangeProfilePicture {
     try {
       await this.userProfileRepository.savePicture(userProfile)
     } catch {
-      await this.uploadFile.delete({ key: uniqueId })
+      if (file !== undefined) await this.uploadFile.delete({ key: uniqueId })
+      throw new Error('teste')
     }
     return userProfile
   }
