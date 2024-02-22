@@ -13,19 +13,32 @@ export class ChangeProfilePicture {
     private readonly userProfileRepository: SaveUserProfile & LoadUserProfile
   ) {}
 
-  async perform (params: Params): Result {
+  async perform (params: Params): Promise<Result> {
     const { id, file } = params
-    const data: {pictureUrl?: string, name?: string} = {}
-    if (file !== undefined) {
-      const { uniqueId } = await this.crypto.generate({ id })
-      const { url } = await this.uploadFile.upload({ key: uniqueId, file: file })
-      data.pictureUrl = url
-    } else {
-      data.name = (await this.userProfileRepository.load({ id })).name
+    const data = {
+      pictureUrl: file !== undefined ? await this.getUrlFile(params) : undefined,
+      name: file === undefined ? await this.getNameProfile(params) : undefined
     }
     const userProfile = new UserProfile(id)
     userProfile.setPicture(data)
     await this.userProfileRepository.savePicture(userProfile)
+    return userProfile
+  }
+
+  private async getUrlFile (params: Params): Promise<string | undefined> {
+    const { id, file } = params
+    if (file !== undefined) {
+      const { uniqueId } = await this.crypto.generate({ id })
+      const { url } = await this.uploadFile.upload({ key: uniqueId, file: file })
+      return url
+    }
+    return undefined
+  }
+
+  private async getNameProfile (params: Params): Promise<string | undefined> {
+    const { id } = params
+    const { name } = await this.userProfileRepository.load({ id })
+    return name
   }
 }
 
@@ -34,5 +47,8 @@ namespace ChangeProfilePicture {
     id: string
     file?: Buffer
   }
-  export type Result = Promise<void>
+  export type Result = {
+    pictureUrl?: string
+    initials?: string
+  }
 }

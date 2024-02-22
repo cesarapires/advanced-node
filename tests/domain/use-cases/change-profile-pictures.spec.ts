@@ -5,6 +5,7 @@ import { UniqueIdGenerator } from '@/domain/contracts/crypto'
 import { SaveUserProfile, LoadUserProfile } from '@/domain/contracts/repository'
 
 import { MockProxy, mock } from 'jest-mock-extended'
+import { mocked } from 'ts-jest/utils'
 
 jest.mock('@/domain/models/user-profile')
 
@@ -45,9 +46,20 @@ describe('ChangeProfilePicture', () => {
   })
 
   it('should call SaveUserPictures whit correct input', async () => {
+    mocked(UserProfile).mockImplementation(id => ({
+      setPicture: jest.fn(),
+      id: 'any_id',
+      pictureUrl: 'any_url',
+      initials: 'any_initials'
+    }))
+
     await sut.perform({ id: 'any_id', file: file })
 
-    expect(userProfileRepository.savePicture).toHaveBeenCalledWith(jest.mocked(UserProfile).mock.instances[0])
+    expect(userProfileRepository.savePicture).toHaveBeenCalledWith((expect.objectContaining({
+      id: 'any_id',
+      initials: 'any_initials',
+      pictureUrl: 'any_url'
+    })))
     expect(userProfileRepository.savePicture).toHaveBeenCalledTimes(1)
   })
 
@@ -62,5 +74,21 @@ describe('ChangeProfilePicture', () => {
     await sut.perform({ id: 'any_id', file: file })
 
     expect(userProfileRepository.load).not.toHaveBeenCalled()
+  })
+
+  it('should return correct data on success', async () => {
+    mocked(UserProfile).mockImplementation(id => ({
+      setPicture: jest.fn(),
+      id: 'any_id',
+      pictureUrl: 'any_url',
+      initials: 'any_initials'
+    }))
+
+    const result = await sut.perform({ id: 'any_id', file: file })
+
+    expect(result).toMatchObject({
+      pictureUrl: 'any_url',
+      initials: 'any_initials'
+    })
   })
 })
