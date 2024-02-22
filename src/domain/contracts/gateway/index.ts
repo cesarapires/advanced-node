@@ -1,2 +1,3 @@
 export * from './facebook'
-export * from './file-storage'
+export * from './upload-file'
+export * from './delete-file'

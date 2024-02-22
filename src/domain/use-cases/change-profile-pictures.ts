@@ -1,5 +1,5 @@
 import { UserProfile } from '@/domain/models'
-import { UploadFile } from '@/domain/contracts/gateway'
+import { DeleteFile, UploadFile } from '@/domain/contracts/gateway'
 import { UniqueIdGenerator } from '@/domain/contracts/crypto'
 import { SaveUserProfile, LoadUserProfile } from '@/domain/contracts/repository'
 
@@ -8,31 +8,31 @@ type Result = ChangeProfilePicture.Result
 
 export class ChangeProfilePicture {
   constructor (
-    private readonly uploadFile: UploadFile,
+    private readonly uploadFile: UploadFile & DeleteFile,
     private readonly crypto: UniqueIdGenerator,
     private readonly userProfileRepository: SaveUserProfile & LoadUserProfile
   ) {}
 
   async perform (params: Params): Promise<Result> {
     const { id, file } = params
+    const { uniqueId } = await this.crypto.generate({ id })
     const data = {
-      pictureUrl: file !== undefined ? await this.getUrlFile(params) : undefined,
+      pictureUrl: file !== undefined ? await this.getUrlFile(file, uniqueId) : undefined,
       name: file === undefined ? await this.getNameProfile(params) : undefined
     }
     const userProfile = new UserProfile(id)
     userProfile.setPicture(data)
-    await this.userProfileRepository.savePicture(userProfile)
+    try {
+      await this.userProfileRepository.savePicture(userProfile)
+    } catch {
+      await this.uploadFile.delete({ key: uniqueId })
+    }
     return userProfile
   }
 
-  private async getUrlFile (params: Params): Promise<string | undefined> {
-    const { id, file } = params
-    if (file !== undefined) {
-      const { uniqueId } = await this.crypto.generate({ id })
-      const { url } = await this.uploadFile.upload({ key: uniqueId, file: file })
-      return url
-    }
-    return undefined
+  private async getUrlFile (file: Buffer, uniqueId: string): Promise<string | undefined> {
+    const { url } = await this.uploadFile.upload({ key: uniqueId, file: file })
+    return url
   }
 
   private async getNameProfile (params: Params): Promise<string | undefined> {
