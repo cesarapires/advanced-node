@@ -110,11 +110,26 @@ describe('ChangeProfilePicture', () => {
   })
 
   it('should rethrow if SaveUserPictures throw', async () => {
-    const error = new Error('save_error')
-    userProfileRepository.savePicture.mockRejectedValueOnce(error)
+    userProfileRepository.savePicture.mockRejectedValueOnce(new Error('save_user_error'))
 
     const promise = sut.perform({ id: 'any_id', file: file })
 
-    await expect(promise).rejects.toThrow(error)
+    await expect(promise).rejects.toThrow(new Error('save_user_error'))
+  })
+
+  it('should rethrow if UploadFile throw', async () => {
+    fileStorage.upload.mockRejectedValueOnce(new Error('update_file_error'))
+
+    const promise = sut.perform({ id: 'any_id', file: file })
+
+    await expect(promise).rejects.toThrow(new Error('update_file_error'))
+  })
+
+  it('should rethrow if LoadUserProfile throw', async () => {
+    userProfileRepository.load.mockRejectedValueOnce(new Error('load_user_error'))
+
+    const promise = sut.perform({ id: 'any_id', file: undefined })
+
+    await expect(promise).rejects.toThrow(new Error('load_user_error'))
   })
 })
