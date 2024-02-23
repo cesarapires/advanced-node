@@ -1,7 +1,7 @@
 import { ChangeProfilePicture } from '@/domain/use-cases'
 import { MockProxy, mock } from 'jest-mock-extended'
 import { Controller, SaveProfileController } from '@/application/controllers'
-import { RequiredFieldError, MaxFileSizeError, InvalidMymeTypeError } from '@/application/errors'
+import { RequiredFieldError, MaxFileSizeError, InvalidMimeTypeError } from '@/application/errors'
 
 describe('SaveProfileController', () => {
   let sut: SaveProfileController
@@ -64,7 +64,7 @@ describe('SaveProfileController', () => {
 
     expect(httpResponse).toEqual({
       statusCode: 400,
-      data: new InvalidMymeTypeError(['png', 'jpeg'])
+      data: new InvalidMimeTypeError(['png', 'jpeg'])
     })
   })
 

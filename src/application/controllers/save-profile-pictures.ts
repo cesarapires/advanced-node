@@ -1,6 +1,6 @@
 import { ChangeProfilePicture } from '@/domain/use-cases'
 import { Controller } from '@/application/controllers'
-import { RequiredFieldError, MaxFileSizeError, InvalidMymeTypeError } from '@/application/errors'
+import { RequiredFieldError, MaxFileSizeError, InvalidMimeTypeError } from '@/application/errors'
 import { HttpResponse, badRequest, ok } from '@/application/helpers'
 
 type HttpRequest = { userId: string, file: { buffer: Buffer, mimeType: string } }
@@ -19,7 +19,7 @@ export class SaveProfileController extends Controller {
     if (file === undefined || file === null) return badRequest(new RequiredFieldError('file'))
     if (file.buffer.length === 0) return badRequest(new RequiredFieldError('file'))
     if (file.buffer.length > 5 * 1024 * 1024) return badRequest(new MaxFileSizeError(5))
-    if (!['image/png', 'image/jpeg'].includes(file.mimeType)) return badRequest(new InvalidMymeTypeError(['png', 'jpeg']))
+    if (!['image/png', 'image/jpeg'].includes(file.mimeType)) return badRequest(new InvalidMimeTypeError(['png', 'jpeg']))
     const profileData = await this.changeProfilePicture.perform({ id: userId, file: file.buffer })
     return ok(profileData)
   }
