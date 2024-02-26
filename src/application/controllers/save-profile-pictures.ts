@@ -1,7 +1,7 @@
 import { ChangeProfilePicture } from '@/domain/use-cases'
 import { Controller } from '@/application/controllers'
-import { RequiredFieldError, MaxFileSizeError, InvalidMimeTypeError } from '@/application/errors'
-import { HttpResponse, badRequest, ok } from '@/application/helpers'
+import { HttpResponse, ok } from '@/application/helpers'
+import { ValidationBuilder, Validator } from '@/application/validation'
 
 type HttpRequest = { userId: string, file: { buffer: Buffer, mimeType: string } }
 type Model = Error | {
@@ -16,11 +16,16 @@ export class SaveProfileController extends Controller {
 
   async perform (params: HttpRequest): Promise<HttpResponse<Model>> {
     const { userId, file } = params
-    if (file === undefined || file === null) return badRequest(new RequiredFieldError('file'))
-    if (file.buffer.length === 0) return badRequest(new RequiredFieldError('file'))
-    if (file.buffer.length > 5 * 1024 * 1024) return badRequest(new MaxFileSizeError(5))
-    if (!['image/png', 'image/jpeg'].includes(file.mimeType)) return badRequest(new InvalidMimeTypeError(['png', 'jpeg']))
     const profileData = await this.changeProfilePicture.perform({ id: userId, file: file.buffer })
     return ok(profileData)
+  }
+
+  override buildValidators (httpRequest: HttpRequest): Validator[] {
+    return [
+      ...ValidationBuilder.of({ value: httpRequest.file, fieldName: 'file' })
+        .required()
+        .image({ allowed: ['png', 'jpg'], maxSizeInMb: 5 })
+        .build()
+    ]
   }
 }
