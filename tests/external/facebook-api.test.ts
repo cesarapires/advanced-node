@@ -1,5 +1,5 @@
 import { env } from '@/main/config/env'
-import { Facebook } from '@/infraestructure/gateways'
+import { Facebook } from '@/infraestructure/gateways/facebook'
 import { AxiosHttpClient } from '@/infraestructure/http'
 
 describe('facebookIntegrationTest', () => {
