@@ -4,6 +4,6 @@ export interface DeleteFile {
 
 export namespace DeleteFile {
   export type Params = {
-    key: string
+    fileName: string
   }
 }

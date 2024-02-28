@@ -2,6 +2,7 @@ import { UserProfile } from '@/domain/models'
 import { DeleteFile, UploadFile } from '@/domain/contracts/gateways/file-storage'
 import { UniqueIdGenerator } from '@/domain/contracts/gateways/crypto'
 import { SaveUserProfile, LoadUserProfile } from '@/domain/contracts/repositories'
+import { FileProps } from '@/domain/models/file-props'
 
 type Params = ChangeProfilePicture.Params
 type Result = ChangeProfilePicture.Result
@@ -25,15 +26,17 @@ export class ChangeProfilePicture {
     try {
       await this.userProfileRepository.savePicture(userProfile)
     } catch (error) {
-      if (file !== undefined) await this.uploadFile.delete({ key: uniqueId })
+      if (file !== undefined) await this.uploadFile.delete({ fileName: uniqueId })
       throw error
     }
     return userProfile
   }
 
-  private async getUrlFile (file: Buffer, uniqueId: string): Promise<string | undefined> {
-    const { url } = await this.uploadFile.upload({ key: uniqueId, file: file })
-    return url
+  private async getUrlFile (file: FileProps, uniqueId: string): Promise<string | undefined> {
+    if (file !== undefined) {
+      const { url } = await this.uploadFile.upload({ fileName: uniqueId, file: file.buffer })
+      return url
+    }
   }
 
   private async getNameProfile (params: Params): Promise<string | undefined> {
@@ -45,7 +48,8 @@ export class ChangeProfilePicture {
 namespace ChangeProfilePicture {
   export type Params = {
     id: string
-    file?: Buffer
+    file?: FileProps
+
   }
   export type Result = {
     pictureUrl?: string

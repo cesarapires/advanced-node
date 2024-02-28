@@ -1,4 +1,5 @@
 import { UserProfile } from '@/domain/models'
+import { FileProps } from '@/domain/models/file-props'
 import { UploadFile, DeleteFile } from '@/domain/contracts/gateways/file-storage'
 import { ChangeProfilePicture } from '@/domain/use-cases'
 import { UniqueIdGenerator } from '@/domain/contracts/gateways/crypto'
@@ -10,7 +11,7 @@ import { mocked } from 'ts-jest/utils'
 jest.mock('@/domain/models/user-profile')
 
 describe('ChangeProfilePicture', () => {
-  let file: Buffer
+  let file: FileProps
   let sut: ChangeProfilePicture
   let fileStorage: MockProxy<UploadFile & DeleteFile>
   let userProfileRepository: MockProxy<SaveUserProfile & LoadUserProfile>
@@ -18,7 +19,7 @@ describe('ChangeProfilePicture', () => {
   const uuid = 'any_unique_id'
 
   beforeAll(() => {
-    file = Buffer.from('any_buffer')
+    file = { buffer: Buffer.from('any_buffer'), mimeType: 'image/png' }
     fileStorage = mock()
     fileStorage.upload.mockResolvedValue({ url: 'any_url' })
     userProfileRepository = mock()
@@ -35,7 +36,7 @@ describe('ChangeProfilePicture', () => {
   it('should call UploadFile with correct params', async () => {
     await sut.perform({ id: 'any_id', file: file })
 
-    expect(fileStorage.upload).toHaveBeenCalledWith({ file, key: uuid })
+    expect(fileStorage.upload).toHaveBeenCalledWith({ file: file.buffer, fileName: uuid })
     expect(fileStorage.upload).toHaveBeenCalledTimes(1)
   })
 
@@ -115,7 +116,7 @@ describe('ChangeProfilePicture', () => {
     userProfileRepository.savePicture.mockRejectedValueOnce(new Error('error'))
 
     sut.perform({ id: 'any_id', file: file }).catch(() => {
-      expect(fileStorage.delete).toHaveBeenCalledWith({ key: uuid })
+      expect(fileStorage.delete).toHaveBeenCalledWith({ fileName: uuid })
       expect(fileStorage.delete).toHaveBeenCalledTimes(1)
     })
   })

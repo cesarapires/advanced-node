@@ -40,7 +40,7 @@ describe('SaveProfileController', () => {
   it('should call ChangeProfilePicture with correct params', async () => {
     await sut.handle({ userId: 'any_user_id', file })
 
-    expect(changeProfilePicture.perform).toHaveBeenCalledWith({ id: 'any_user_id', file: buffer })
+    expect(changeProfilePicture.perform).toHaveBeenCalledWith({ id: 'any_user_id', file: file })
     expect(changeProfilePicture.perform).toHaveBeenCalledTimes(1)
   })
 
