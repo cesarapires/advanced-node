@@ -8,7 +8,7 @@ type ParamsSaveUserProfile = SaveUserProfile.Params
 type ParamsLoad = LoadUserProfile.Params
 type ResultLoad = LoadUserProfile.Result
 
-export class PostregresUserProfileRepository implements SaveUserProfile {
+export class PostregresUserProfileRepository implements SaveUserProfile, LoadUserProfile {
   async savePicture (params: ParamsSaveUserProfile): Promise<void> {
     const { id, pictureUrl, initials } = params
     const postgresUserRepository = getRepository(PostgresUserAccount)
