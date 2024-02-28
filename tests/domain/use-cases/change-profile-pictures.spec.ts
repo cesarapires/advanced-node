@@ -16,6 +16,7 @@ describe('ChangeProfilePicture', () => {
   let fileStorage: MockProxy<UploadFile & DeleteFile>
   let userProfileRepository: MockProxy<SaveUserProfile & LoadUserProfile>
   let crypto: MockProxy<UniqueIdGenerator>
+  const pathFile = 'private/user/profile'
   const uuid = 'any_unique_id'
 
   beforeAll(() => {
@@ -34,9 +35,17 @@ describe('ChangeProfilePicture', () => {
   })
 
   it('should call UploadFile with correct params', async () => {
-    await sut.perform({ id: 'any_id', file: file })
+    const fileName = `${pathFile}/${uuid}.jpeg`
+    await sut.perform({
+      id: 'any_id',
+      file:
+      {
+        buffer: Buffer.from('any_buffer'),
+        mimeType: 'image/jpeg'
+      }
+    })
 
-    expect(fileStorage.upload).toHaveBeenCalledWith({ file: file.buffer, fileName: uuid })
+    expect(fileStorage.upload).toHaveBeenCalledWith({ file: file.buffer, fileName })
     expect(fileStorage.upload).toHaveBeenCalledTimes(1)
   })
 

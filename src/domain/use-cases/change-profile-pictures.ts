@@ -8,6 +8,8 @@ type Params = ChangeProfilePicture.Params
 type Result = ChangeProfilePicture.Result
 
 export class ChangeProfilePicture {
+  private readonly pathFile = 'private/user/profile'
+
   constructor (
     private readonly uploadFile: UploadFile & DeleteFile,
     private readonly crypto: UniqueIdGenerator,
@@ -34,7 +36,8 @@ export class ChangeProfilePicture {
 
   private async getUrlFile (file: FileProps, uniqueId: string): Promise<string | undefined> {
     if (file !== undefined) {
-      const { url } = await this.uploadFile.upload({ fileName: uniqueId, file: file.buffer })
+      const fileName = `${this.pathFile}/${uniqueId}.${file.mimeType.split('/')[1]}`
+      const { url } = await this.uploadFile.upload({ fileName, file: file.buffer })
       return url
     }
   }
