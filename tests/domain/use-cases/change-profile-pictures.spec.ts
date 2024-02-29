@@ -115,7 +115,7 @@ describe('ChangeProfilePicture', () => {
 
     const result = await sut.perform({ id: 'any_id', file: file })
 
-    expect(result).toMatchObject({
+    expect(result).toEqual({
       pictureUrl: 'any_url',
       initials: 'any_initials'
     })

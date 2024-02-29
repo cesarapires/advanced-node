@@ -31,7 +31,10 @@ export class ChangeProfilePicture {
       if (file !== undefined) await this.uploadFile.delete({ fileName: uniqueId })
       throw error
     }
-    return userProfile
+    return {
+      pictureUrl: userProfile.pictureUrl,
+      initials: userProfile.initials
+    }
   }
 
   private async getUrlFile (file: FileProps, uniqueId: string): Promise<string | undefined> {
