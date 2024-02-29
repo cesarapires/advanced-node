@@ -19,6 +19,6 @@ export class PostregresUserProfileRepository implements SaveUserProfile, LoadUse
     const { id } = params
     const postgresUserRepository = getRepository(PostgresUserAccount)
     const postresUser = await postgresUserRepository.findOne({ id: parseInt(id) })
-    if (postresUser !== undefined) return { name: postresUser.name }
+    if (postresUser !== undefined) return { name: postresUser.name ?? undefined }
   }
 }

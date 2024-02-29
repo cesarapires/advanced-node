@@ -57,7 +57,15 @@ describe('PostgresLoadUserAccount', () => {
       expect(userProfile?.name).toBe('any_name')
     })
 
-    it('should load user profile', async () => {
+    it('should return name undefined when name is user', async () => {
+      const { id } = await postgresUserRepository.save({ email: 'any_email' })
+
+      const userProfile = await sut.load({ id: id.toString() })
+
+      expect(userProfile?.name).toBeUndefined()
+    })
+
+    it('should not load user profile when user is undefined', async () => {
       const userProfile = await sut.load({ id: '1' })
 
       expect(userProfile).toBeUndefined()
