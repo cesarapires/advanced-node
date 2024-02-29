@@ -53,6 +53,20 @@ describe('ExpressRouter', () => {
     expect(response.json).toHaveBeenCalledTimes(1)
   })
 
+  it('should respond with 204 and empty data', async () => {
+    controller.handle.mockResolvedValueOnce({
+      statusCode: 204,
+      data: null
+    })
+
+    await sut(request, response, next)
+
+    expect(response.status).toHaveBeenCalledWith(204)
+    expect(response.status).toHaveBeenCalledTimes(1)
+    expect(response.json).toHaveBeenCalledWith(null)
+    expect(response.json).toHaveBeenCalledTimes(1)
+  })
+
   it('should respond with 400 and valid error', async () => {
     controller.handle.mockResolvedValueOnce({
       statusCode: 400,
