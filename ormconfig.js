@@ -5,5 +5,5 @@ module.exports = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: ['dist/infraestructure/postgres/entities/index.js']
+  entities: [`${process.env.TS_NODE_DEV === undefined ? 'dist/' : 'src/'}infraestructure/repositories/postgres/entities/index.{ts,js}`]
 }
